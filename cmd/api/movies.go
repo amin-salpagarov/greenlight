@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/amin-salpagarov/greenlight/internal/data"
+	"github.com/amin-salpagarov/greenlight/internal/validator"
 	"net/http"
 	"time"
-	"github.com/amin-salpagarov/greenlight/internal/validator"
 )
 
 func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Request) {
