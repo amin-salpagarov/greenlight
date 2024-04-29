@@ -1,2 +1,2 @@
 dlt_main:
-	sed -i '/^\/\/.*/d' 
+	@sed -i '/^\s*\/\/.*/d' ./cmd/api/main.go
