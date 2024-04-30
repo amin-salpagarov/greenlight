@@ -1,14 +1,20 @@
-FROM golang:1.22.1
+# Используем официальный образ Golang в качестве базового образа
+FROM golang:latest
 
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-#dependencies
-COPY ["go.mod", "go.sum", "./"]
-RUN go mod download
-RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+# Копируем содержимое текущего каталога (где находится Dockerfile) внутрь контейнера в /app
+COPY . .
 
-#build
-COPY ./ ./
-RUN go build -o ./bin/app cmd/api/main.go
+# Собираем приложение, используя go get (это может понадобиться, если ваш проект зависит от сторонних пакетов)
+# RUN go get -d -v ./...
 
-CMD ["./bin/app"]
+# Собираем само приложение
+RUN go build -o main ./cmd/api
+
+# Экспортируем порт 8080, который ваше приложение будет слушать
+EXPOSE 8080
+
+# Запускаем приложение при старте контейнера
+CMD ["./main"]

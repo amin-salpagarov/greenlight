@@ -9,11 +9,11 @@ migrate-down:
 local:
 	cp .env.example .env
 
-up: down local
-	docker-compose up --build golang
+up: down 
+	docker compose up --build golang
 
 down:
-	docker-compose down
+	docker compose down
 
 
 

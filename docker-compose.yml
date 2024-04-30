@@ -1,34 +1,27 @@
-version: "3"
+version: '3.8'
 
 services:
-  postgres:
-    container_name: postgres_container
-    image: postgres
-    environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-    volumes:
-      - postgres:/data/postgres
+  app:
+    container_name: app
+    build:
+      context: .
     ports:
-      - "5432:5432"
-    networks:
-      - internal-network
-    restart: unless-stopped
-
-  golang:
-    container_name: golang_container
+      - 4000:8080
     depends_on:
-      - postgres
-    build: .
-    ports:
-      - "8080:8080"
-    networks:
-      - internal-network
-    restart: unless-stopped
+      - db
+    env_file: .env
+    restart: always
 
-networks:
-  internal-network:
-    driver: bridge
+
+  db:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - 5435:5432
+    env_file: .env
+    volumes:
+      - greenlight_db:/var/lib/postgresql/data
+    restart: always
 
 volumes:
-  postgres:
+  greenlight_db:
