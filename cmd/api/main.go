@@ -5,12 +5,12 @@ import (
 	"database/sql" // New import
 	"flag"
 	"fmt"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"log"
 	"net/http"
 	"os"
 	"time"
-	_ "github.com/lib/pq"
-	"github.com/joho/godotenv"
 )
 
 const version = "1.0.0"
@@ -37,14 +37,12 @@ func main() {
 	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
 	flag.Parse()
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
-    cfg.db.dsn = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-        os.Getenv("DB_HOST"),
-        os.Getenv("DB_PORT"),
-        os.Getenv("DB_USER"),
-        os.Getenv("DB_PASS"),
-        os.Getenv("DB_NAME"))
-
-    fmt.Println(cfg.db.dsn)
+	cfg.db.dsn = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASS"),
+		os.Getenv("DB_NAME"))
 	db, err := openDB(cfg)
 	if err != nil {
 		logger.Fatal(err)
