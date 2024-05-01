@@ -1,22 +1,12 @@
 include .env
 
-migrate-up:
-	docker exec -it golang_container goose -dir ./migrations postgres "host=${PG_HOST} user=${PG_USER} password=${PG_PASSWORD} dbname=${PG_DB_NAME} sslmode=disable" up
-
-migrate-down:
-	docker exec -it golang_container goose -dir ./migrations postgres "host=${PG_HOST} user=${PG_USER} password=${PG_PASSWORD} dbname=${PG_DB_NAME} sslmode=disable" down
-
-local:
-	cp .env.example .env
-
-up: down 
-	docker compose up --build golang
-
-down:
-	docker compose down
-
-
-
-
 dlt_main:
 	@sed -i '/^\s*\/\/.*/d' ./cmd/api/main.go
+
+migrate:
+	source .env && migrate -path=./migrations -database=$GREENLIGHT_DB_DSN up
+migrate_down:
+	source .env && migrate -path=./migrations -database=$GREENLIGHT_DB_DSN down
+
+connect_db:
+	docker exec -it postgres /bin/bash && psql -U postgres
