@@ -10,3 +10,5 @@ migrate_down:
 
 connect_db:
 	docker exec -it postgres /bin/bash && psql -U postgres
+
+#152
